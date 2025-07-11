@@ -20,7 +20,7 @@
 
 ### Installation
 ```bash
-git clone https://github.com/your-repo/Task-manager.git
+git clone https://github.com/Skakodub-K/Task-manager.git
 cd Task-manager
 npm install
 ```
