@@ -17,7 +17,7 @@ function App() {
           <Header>
             <HeaderContent />
           </Header>
-          <Content style={{ minHeight: "82vh", minWidth: "100vw" }}>
+          <Content style={{ minHeight: "85vh", minWidth: "100vw", marginTop:20 }}>
             <Routes>
               <Route path="/" element={<MainPage />} />
               <Route path="/task/:taskId" element={<EditPage />} />

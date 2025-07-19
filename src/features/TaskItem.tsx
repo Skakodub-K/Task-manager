@@ -29,10 +29,10 @@ const TaskItem: React.FC<TaskItemProps> = observer(({ item }) => {
       >
         <Card
           title={title}
-          style={{ width: 300, cursor: "pointer" }}
+          style={{ width: 300, cursor: "pointer", paddingTop: "10px" }}
           onClick={() => navigate(`/task/${id}`)}
         >
-          <div style={{ paddingTop: "10px", overflowWrap: "break-word" }}>
+          <div style={{ overflowWrap: "break-word" }}>
             <Tag icon={<CalendarOutlined />} color="default">
               {date.toLocaleDateString()}
             </Tag>
