@@ -129,16 +129,17 @@ const HeaderContent: React.FC = () => {
           return { type: "divider" } as const;
         }
 
-        const isAllItem = item.key.startsWith("all-");
+        const filterItem = item as FilterItem;
+        const isAllItem = filterItem.key.startsWith("all-");
         const isSelected = isAllItem
           ? !currentFilters[config.type]
-          : item.key === currentFilters[config.type];
+          : filterItem.key === currentFilters[config.type];
 
         return {
-          key: item.key,
-          label: item.label,
+          key: filterItem.key,
+          label: filterItem.label,
           onClick: () =>
-            updateFilters(config.type, isAllItem ? undefined : item.key),
+            updateFilters(config.type, isAllItem ? undefined : filterItem.key),
           style: isSelected ? { backgroundColor: "#e6f7ff" } : undefined,
         };
       });
