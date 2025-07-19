@@ -22,28 +22,36 @@ const TaskItem: React.FC<TaskItemProps> = observer(({ item }) => {
 
   return (
     <>
-      <Badge.Ribbon text={item.priority} color={PriorityColor[priority]}>
+      <Badge.Ribbon
+        text={item.priority}
+        color={PriorityColor[priority]}
+        style={{ top: " -6px" }}
+      >
         <Card
           title={title}
-          style={{ width: 300 }}
+          style={{ width: 300, cursor: "pointer" }}
           onClick={() => navigate(`/task/${id}`)}
         >
-          <Tag icon={<CalendarOutlined />} color="default">{date.toLocaleDateString()}</Tag>
-          <p>{description}</p>
-          <Flex gap="4px 0" justify="space-between" wrap align="center">
-            <div>
-              <Tag color={CategoryColor[category]}>{category}</Tag>
-              <Tag color={StatusColor[status]}>{status}</Tag>
-            </div>
-            <Button
-              color="default"
-              variant="text"
-              style={{ fontSize: "22px", zIndex: 2 }}
-              onClick={handleDelete}
-            >
-              <DeleteOutlined />
-            </Button>
-          </Flex>
+          <div style={{ paddingTop: "10px", overflowWrap: "break-word" }}>
+            <Tag icon={<CalendarOutlined />} color="default">
+              {date.toLocaleDateString()}
+            </Tag>
+            <p>{description}</p>
+            <Flex gap="4px 0" justify="space-between" wrap align="center">
+              <div>
+                <Tag color={CategoryColor[category]}>{category}</Tag>
+                <Tag color={StatusColor[status]}>{status}</Tag>
+              </div>
+              <Button
+                color="default"
+                variant="text"
+                style={{ fontSize: "22px", zIndex: 2 }}
+                onClick={handleDelete}
+              >
+                <DeleteOutlined />
+              </Button>
+            </Flex>
+          </div>
         </Card>
       </Badge.Ribbon>
     </>

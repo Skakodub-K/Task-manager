@@ -168,10 +168,10 @@ const HeaderContent: React.FC = () => {
       style={{ position: "relative", top: 15 }}
     >
       <Text
-        style={{ color: "#fff", fontSize: "24px", cursor: "pointer" }}
+        style={{ color: "#fff", fontSize: "32px", cursor: "pointer" }}
         onClick={() => navigate("/")}
       >
-        Task Manager
+        <b>Task Manager</b>
       </Text>
 
       {screens.md ? (
