@@ -11,12 +11,10 @@ const MainPage: React.FC = observer(() => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
-  // Получаем параметры фильтрации
   const category = searchParams.get('category');
   const status = searchParams.get('status');
   const priority = searchParams.get('priority');
 
-  // Фильтрация задач
   const filteredTasks = taskStore.items.filter((task: ITask) => {
     const categoryMatch = category 
       ? task.category.toLowerCase() === category.toLowerCase() 

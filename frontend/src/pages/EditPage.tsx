@@ -12,7 +12,7 @@ const EditPage: React.FC = observer(() => {
   const { createTask, updateTask, getID, items } = useStore();
   const navigate = useNavigate();
 
-  let item: ITask | undefined;
+  let item:  Omit<ITask,'date'> | undefined;
   let editForm = <NotFound />;
   const handleOk = (id: number): void => {
     if (!item) return;

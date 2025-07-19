@@ -3,7 +3,7 @@ import type { ITask } from "../tasks";
 import { PriorityColor, StatusColor, CategoryColor } from "../tasks";
 import { observer } from "mobx-react-lite";
 interface TaskFormProps {
-  init: Omit<ITask, "id">;
+  init: Omit<ITask, "id" | 'date'>;
   onOk:()=>void;
   onCancel:()=>void;
   form: FormInstance;

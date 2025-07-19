@@ -16,8 +16,8 @@ class TaskStore {
     category,
     status,
     priority,
-    date,
   }: ITask) => {
+    const date = new Date();
     this.items.push({
       id,
       title,
