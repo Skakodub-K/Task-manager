@@ -16,3 +16,8 @@ html {
     "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
     "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
+
+:where(.css-dev-only-do-not-override-pjilya).ant-card .ant-card-body {
+  padding-top: 10px;
+  overflow-wrap: break-word;
+}

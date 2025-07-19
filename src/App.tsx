@@ -1,22 +1,37 @@
 import "./App.css";
-import { Layout, Typography } from "antd";
-import TaskList from "./components/TaskList";
-import tasks from "./tasks";
+import { Layout } from "antd";
+import HeaderContent from "./features/HeaderContent";
+import { TaskStoreContext } from "./store/store-context";
+import TaskStore from "./store/store";
+import MainPage from "./pages/MainPage";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import EditPage from "./pages/EditPage";
+import NotFound from "./pages/NotFound";
+
 function App() {
   const { Header, Footer, Content } = Layout;
-  const { Text } = Typography;
+  const taskStore = new TaskStore();
   return (
-    <Layout>
-      <Header style={{ textAlign: "start" }}>
-        <Text style={{ color: "#fff", fontSize: "24px" }}>Task Manager</Text>
-      </Header>
-      <Content>
-        <TaskList tasks={tasks} />
-      </Content>
-      <Footer style={{ textAlign: "center" }}>
-        Task Manager ©{new Date().getFullYear()}
-      </Footer>
-    </Layout>
+    <TaskStoreContext.Provider value={taskStore}>
+      <BrowserRouter>
+        <Layout>
+          <Header>
+            <HeaderContent />
+          </Header>
+          <Content style={{ minHeight: "82vh", minWidth: "100vw" }}>
+            <Routes>
+              <Route path="/" element={<MainPage />} />
+              <Route path="/task/:taskId" element={<EditPage />} />
+              <Route path="/:filter" element={<MainPage />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Content>
+          <Footer style={{ textAlign: "center" }}>
+            Task Manager ©{new Date().getFullYear()}
+          </Footer>
+        </Layout>
+      </BrowserRouter>
+    </TaskStoreContext.Provider>
   );
 }
 
