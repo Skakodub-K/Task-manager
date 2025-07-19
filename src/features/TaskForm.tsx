@@ -1,14 +1,16 @@
-import { Form, Input, Select, type FormInstance } from "antd";
+import { Form, Input,Flex,  Select,Button,  type FormInstance } from "antd";
 import type { ITask } from "../tasks";
 import { PriorityColor, StatusColor, CategoryColor } from "../tasks";
 import { observer } from "mobx-react-lite";
 interface TaskFormProps {
   init: Omit<ITask, "id">;
+  onOk:()=>void;
+  onCancel:()=>void;
   form: FormInstance;
 }
-const TaskForm: React.FC<TaskFormProps> = observer(({ init, form }) => {
+const TaskForm: React.FC<TaskFormProps> = observer(({ init, form, onOk, onCancel }) => {
   return (
-    <Form form={form} initialValues={init} layout="vertical">
+    <Form form={form} style={{width:'50vw'}} initialValues={init} layout="vertical">
       <Form.Item
         name="title"
         label="Заголовок"
@@ -45,6 +47,16 @@ const TaskForm: React.FC<TaskFormProps> = observer(({ init, form }) => {
             </Select.Option>
           ))}
         </Select>
+      </Form.Item>
+     
+       <Form.Item >
+         <Flex gap='3vw'  justify="space-between" align="center">
+        <Button type="default" onClick={onCancel}>
+          Отменить
+        </Button>
+        <Button type="primary" onClick={onOk}>
+          Сохранить
+        </Button></Flex>
       </Form.Item>
     </Form>
   );

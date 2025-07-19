@@ -1,6 +1,7 @@
 import { makeAutoObservable } from "mobx";
 import type { ITask } from "../tasks";
 import tasks from "../tasks";
+
 class TaskStore {
   items: ITask[] = tasks;
 
