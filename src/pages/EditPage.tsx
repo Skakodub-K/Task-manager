@@ -1,74 +1,83 @@
 import { useStore } from "../store/store-context";
-import { Flex, Form } from "antd";
+import { Flex, Spin, Form, message } from "antd";
 import { observer } from "mobx-react-lite";
 import { useNavigate, useParams } from "react-router-dom";
-import type { ITask } from "../tasks";
 import TaskForm from "../features/TaskForm";
 import NotFound from "./NotFound";
+import { useEffect, useState } from "react";
+
 const EditPage: React.FC = observer(() => {
-  const params = useParams();
+  const params = useParams<{ taskId: string }>();
   const [form] = Form.useForm();
   const isCreateMode = params.taskId === "new";
-  const { createTask, updateTask, getID, items } = useStore();
+  const taskStore = useStore();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
-  let item:  Omit<ITask,'date'> | undefined;
-  let editForm = <NotFound />;
-  const handleOk = (id: number): void => {
-    if (!item) return;
+  useEffect(() => {
+    if (taskStore.items.length === 0) {
+      taskStore.loadTasks();
+    }
+  }, [taskStore]);
 
-    form
-      .validateFields()
-      .then((values) => {
-        if (isCreateMode) {
-          createTask({ ...values, id: id });
-        } else {
-          updateTask({ ...values, id: id });
-        }
-        navigate("/");
-      })
-      .catch((info) => {
-        console.log("Validate Failed:", info);
-      });
+  const handleSubmit = async () => {
+    try {
+      const values = await form.validateFields();
+      setLoading(true);
+
+      if (isCreateMode) {
+        await taskStore.createTask(values);
+        message.success("Задача создана");
+      } else if (params.taskId) {
+        await taskStore.updateTask({
+          ...values,
+          id: params.taskId,
+          date: new Date(),
+        });
+        message.success("Задача обновлена");
+      }
+      navigate("/");
+    } catch (error) {
+      message.error("Ошибка сохнанения");
+      console.error("Error saving task:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  if (isCreateMode) {
-    item = {
-      id: getID,
-      title: "",
-      description: "",
-      category: "bug",
-      status: "To Do",
-      priority: "Medium",
-    };
+  const handleCancel = () => {
+    navigate("/");
+  };
 
-    editForm = (
-      <TaskForm
-        form={form}
-        init={item}
-        onOk={() => handleOk(getID)}
-        onCancel={() => navigate("/")}
-      />
-    );
-  } else {
-    item = items.find((task) => task.id === Number(params.taskId));
-
-    if (item) {
-      const itemId = item.id;
-      editForm = (
-        <TaskForm
-          form={form}
-          init={item}
-          onOk={() => handleOk(itemId)}
-          onCancel={() => navigate("/")}
-        />
-      );
+  if (!isCreateMode && params.taskId) {
+    const task = taskStore.items.find((task) => task.id === params.taskId);
+    if (!task && !taskStore.isLoading) {
+      return <NotFound />;
     }
   }
 
+  const initialValues = isCreateMode
+    ? {
+        title: "",
+        description: "",
+        category: "bug",
+        status: "To Do",
+        priority: "Medium",
+      }
+    : taskStore.items.find((task) => task.id === params.taskId);
+
   return (
     <Flex justify="center" align="center">
-      {editForm}
+      {loading ? (
+        <Spin style={{top:'30vh'}} size="large"></Spin>
+      ) : (
+        <TaskForm
+          form={form}
+          init={initialValues}
+          onOk={handleSubmit}
+          onCancel={handleCancel}
+        />
+      )}
     </Flex>
   );
 });

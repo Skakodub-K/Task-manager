@@ -14,10 +14,11 @@ const TaskItem: React.FC<TaskItemProps> = observer(({ item }) => {
   const { id, title, description, category, status, priority, date } = item;
   const navigate = useNavigate();
 
-  const handleDelete = (e: React.MouseEvent<HTMLButtonElement>): void => {
+  const taskDate = typeof date === 'string' ? new Date(date) : date;
+  const handleDelete = async (e: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
     e.stopPropagation();
+    await deleteTask(id);
     navigate("/");
-    deleteTask(id);
   };
 
   return (
@@ -34,7 +35,7 @@ const TaskItem: React.FC<TaskItemProps> = observer(({ item }) => {
         >
           <div style={{ overflowWrap: "break-word", position:'relative', bottom:16 }}>
             <Tag icon={<CalendarOutlined />} color="default">
-              {date.toLocaleDateString()}
+              {taskDate.toLocaleDateString()}
             </Tag>
             <p>{description}</p>
             <Flex gap="4px 0" justify="space-between" wrap align="center">

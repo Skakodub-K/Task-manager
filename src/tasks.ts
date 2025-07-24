@@ -1,11 +1,11 @@
 export interface ITask {
-  id: number;
+  id: string;
   title: string;
   description: string;
   category: "bug" | "feature" | "documentation" | "refactor" | "test";
   status: "To Do" | "In Progress" | "Done";
   priority: "High" | "Medium" | "Low";
-  date:Date;
+  date: Date;
 }
 export enum PriorityColor {
   High = "red",
@@ -26,17 +26,3 @@ export enum CategoryColor {
   refactor = "purple",
   test = "cyan",
 }
-
-const tasks: ITask[] = [
-  {
-    id: 1,
-    title: "Исправить баг в авторизации",
-    description: "При логине иногда выдает 500 ошибку",
-    category: "bug",
-    status: "To Do",
-    priority: "High",
-    date: new Date(),
-  },
-];
-
-export default tasks;
