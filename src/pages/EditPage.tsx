@@ -4,6 +4,7 @@ import { observer } from "mobx-react-lite";
 import { useNavigate, useParams } from "react-router-dom";
 import TaskForm from "../features/TaskForm";
 import NotFound from "./NotFound";
+import type { ITask } from "../tasks";
 import { useEffect, useState } from "react";
 
 const EditPage: React.FC = observer(() => {
@@ -56,15 +57,28 @@ const EditPage: React.FC = observer(() => {
     }
   }
 
-  const initialValues = isCreateMode
+  
+  const defaultValues: Omit<ITask, "id" | "date"> = {
+    title: "",
+    description: "",
+    category: "bug",
+    status: "To Do",
+    priority: "Medium",
+  };
+
+  const existingTask = !isCreateMode && params.taskId 
+    ? taskStore.items.find((task) => task.id === params.taskId)
+    : undefined;
+
+  const initialValues: Omit<ITask, "id" | "date"> = existingTask 
     ? {
-        title: "",
-        description: "",
-        category: "bug",
-        status: "To Do",
-        priority: "Medium",
+        title: existingTask.title,
+        description: existingTask.description,
+        category: existingTask.category,
+        status: existingTask.status,
+        priority: existingTask.priority,
       }
-    : taskStore.items.find((task) => task.id === params.taskId);
+    : defaultValues;
 
   return (
     <Flex justify="center" align="center">
